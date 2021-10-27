@@ -1,19 +1,21 @@
 #include "oppgave_1.h"
 #include <conio.h>
+#include <ctime>
 
 Oppgave_1::Oppgave_1() { }
 
 void Oppgave_1::Aktiver()
 {
-    const int size {20};
+    const int size {10};
     int array2[size];
     FillArray(array2,size);
     PrintArray(array2,size);
-    MergeSort(array2,0, size-1, false);
-    PrintArray(array2,size);
+    //MergeSort(array2,0, size-1, true);
+    InsertionSort(array2, size,true);
 }
 void Oppgave_1::FillArray(int *a, int size)
 {
+    srand((unsigned)time(0));
     for(int i = 0; i < size; i++)
         a[i] = rand() % (size*2)+1;
 }
@@ -28,50 +30,47 @@ void Oppgave_1::PrintArray(int *a, int size)
 }
 void Oppgave_1::Merge(int *a, const int venstre, const int midt, const int right)
 {
-    const int LeftSubRange{midt-venstre};
-    const int RightSubRange{right-midt};
+    const int LeftSubRange = midt-venstre+ 1;
+    const int RightSubRange = right-midt;
 
-    auto *vArr = new int[LeftSubRange];
-    auto *hArr = new int[RightSubRange];
+    auto *LeftArray = new int[LeftSubRange];
+    auto *RightArray = new int[RightSubRange];
 
-    for(int i= 0; i <LeftSubRange; i++)
-        vArr[i] = a[venstre+i];
-    for(int j=0; j<RightSubRange;j++)
-        hArr[j]=a[midt+1+j];
-
-    int vIndex{0},hIndex{0};
+    for(int i= 0; i < LeftSubRange; i++)
+        LeftArray[i] = a[venstre+i];
+    for(int j=0; j< RightSubRange;j++)
+        RightArray[j]=a[midt+1+j];
+    int LeftIndex{0},RightIndex{0};
     int fletteIndex = venstre;
 
-    while (vIndex < LeftSubRange && hIndex < RightSubRange) {
-        if(vArr[vIndex] <= hArr[hIndex])
+    while (LeftIndex < LeftSubRange && RightIndex < RightSubRange) {
+        if(LeftArray[LeftIndex] <= RightArray[RightIndex])
         {
-            a[fletteIndex] = vArr[vIndex];
-            hIndex++;
+            a[fletteIndex] = LeftArray[LeftIndex];
+            LeftIndex++;
         }
         else
         {
-            a[fletteIndex] = hArr[hIndex];
-            hIndex++;
+            a[fletteIndex] = RightArray[RightIndex];
+            RightIndex++;
         }
         fletteIndex++;
-        PrintArray(a, right);
-        getch();
-    }
+    }   
 
-    while(vIndex < LeftSubRange)
+    while(LeftIndex < LeftSubRange)
     {
-        a[fletteIndex] = vArr[vIndex];
-        vIndex++;
+        a[fletteIndex] = LeftArray[LeftIndex];
+        LeftIndex++;
         fletteIndex++;
     }
-    while(hIndex < RightSubRange)
+    while(RightIndex < RightSubRange)
     {
-        a[fletteIndex] = hArr[hIndex];
-        hIndex++;
+        a[fletteIndex] = RightArray[RightIndex];
+        RightIndex++;
         fletteIndex++;
     }
-    delete[] hArr;
-    delete[] vArr;
+    delete[] RightArray;
+    delete[] LeftArray;
 }
 void Oppgave_1::MergeSort(int *a, int start, int slutt, bool PrintSteps)
 {
@@ -88,14 +87,15 @@ void Oppgave_1::MergeSort(int *a, int start, int slutt, bool PrintSteps)
 }
 void Oppgave_1::InsertionSort(int *a, int size, bool printSteps)
 {
-    for(int i = 1; i<size; i++)
+    int i, j, temp;
+    for(i = 1; i<size; i++)
     {
-        int temp = a[i];
-        for(int j=i; j>=0 && a[j] > temp; j--)
+        temp = a[i];
+        for(j=i-1; j>=0 && a[j] > temp; j--)
         {
             a[j+1] = a[j];
-            a[j+1] = temp;
         }
+        a[j+1] = temp;
         if(printSteps)
             PrintArray(a, size);
     }
