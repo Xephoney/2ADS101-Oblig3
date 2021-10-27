@@ -6,6 +6,7 @@ class Oppgave_4
 {
 public:
     Oppgave_4();
+    void Aktiver();
 };
 
 #endif // OPPGAVE_4_H
