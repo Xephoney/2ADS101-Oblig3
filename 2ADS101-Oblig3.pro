@@ -11,7 +11,6 @@ SOURCES += \
         oppgave_4.cpp
 
 HEADERS += \
-    Sorting.h \
     oppgave_1.h \
     oppgave_2.h \
     oppgave_3.h \
