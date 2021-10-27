@@ -1,7 +1,6 @@
 #ifndef OPPGAVE_1_H
 #define OPPGAVE_1_H
-
-#include "Sorting.h"
+#include <iostream>
 
 class Oppgave_1
 {
