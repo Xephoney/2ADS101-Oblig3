@@ -6,12 +6,28 @@ Oppgave_1::Oppgave_1() { }
 
 void Oppgave_1::Aktiver()
 {
-    const int size {10};
-    int array2[size];
-    FillArray(array2,size);
-    PrintArray(array2,size);
-    //MergeSort(array2,0, size-1, true);
-    InsertionSort(array2, size,true);
+    const int size1 {10};
+    const int size2 {100};
+    const int size3 {1000};
+    const int size4 {10000};
+
+    int array1[size1];
+    int array2[size2];
+    int array3[size3];
+    int array4[size4];
+
+
+    std::cout << "----Insertion----\n";
+    SortTimeInsertion(array1, size1, 10000);
+    SortTimeInsertion(array2, size2, 1000);
+    SortTimeInsertion(array3, size3, 100);
+    SortTimeInsertion(array4, size4, 10);
+
+    std::cout << "----Merge----\n";
+    SortTimeMerge(array1, size1, 10000);
+    SortTimeMerge(array2, size2, 1000);
+    SortTimeMerge(array3, size3, 100);
+    SortTimeMerge(array4, size4, 10);
 }
 void Oppgave_1::FillArray(int *a, int size)
 {
@@ -71,6 +87,39 @@ void Oppgave_1::Merge(int *a, const int venstre, const int midt, const int right
     }
     delete[] RightArray;
     delete[] LeftArray;
+}
+void Oppgave_1::SortTimeInsertion(int* a, int size, int loops)
+{
+    //Starte klokka
+    auto start = std::chrono::high_resolution_clock::now();
+    for(int i = 0; i<loops; i++)
+    {
+        //fylle array
+        FillArray(a,size);
+        //kalle sorterings funksjonen
+        InsertionSort(a,size,false);
+    }
+    //Stoppe klokka
+    auto slutt = std::chrono::high_resolution_clock::now();
+
+    //regne ut totaltid gjennom en cast og hente ut .Count()
+    double time = std::chrono::duration_cast<std::chrono::milliseconds>(slutt - start).count();
+
+    //printe ut tiden gjennomsnittstiden per sortering ved å dele på loops
+    std::cout << "[" << size <<"] = " << time/(double)loops << " milliseconds\n";
+}
+void Oppgave_1::SortTimeMerge(int* a, int size, int loops)
+{
+    auto start = std::chrono::high_resolution_clock::now();
+    for(int i = 0; i<loops; i++)
+    {
+        FillArray(a,size);
+        MergeSort(a,0,size,false);
+    }
+    auto slutt = std::chrono::high_resolution_clock::now();
+    double time = std::chrono::duration_cast<std::chrono::milliseconds>(slutt - start).count();
+
+    std::cout << "[" << size <<"] = " << time/(double)loops << " milliseconds\n";
 }
 void Oppgave_1::MergeSort(int *a, int start, int slutt, bool PrintSteps)
 {
