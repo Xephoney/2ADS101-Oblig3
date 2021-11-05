@@ -11,5 +11,10 @@ int main()
     Oppgave_1 oppg1;
     oppg1.Aktiver();
 
+    std::cout << " " << std::endl;
+
+    Oppgave_3 oppg3;
+    oppg3.Aktiver();
+
     return 0;
 }

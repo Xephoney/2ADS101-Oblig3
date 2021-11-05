@@ -25,7 +25,7 @@ namespace std
     };
 };
 
-
+void obg3_unordered_set();
 
 class Oppgave_3
 {
