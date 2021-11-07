@@ -16,5 +16,7 @@ int main()
     Oppgave_3 oppg3;
     oppg3.Aktiver();
 
+    Oppgave_4 oppg4;
+    oppg4.Aktiver();
     return 0;
 }
