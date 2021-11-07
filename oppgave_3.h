@@ -5,6 +5,7 @@
 
 using namespace std;
 
+//we set up the Test Struct for the task
 struct Test
 {
     int key;
@@ -24,8 +25,6 @@ namespace std
         }
     };
 };
-
-void obg3_unordered_set();
 
 class Oppgave_3
 {
