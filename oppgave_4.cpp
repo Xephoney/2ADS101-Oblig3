@@ -23,68 +23,49 @@ void Oppgave_4::Aktiver()
     oppg4Graf.settinn_kant('A','E',5.0);
     oppg4Graf.settinn_kant('C','E',4.0);
 
-    // kontroll testing //
-    for(Node* n : oppg4Graf.noder){
-        cout<<n->m_navn<<" kanter: "<<endl;
-        for (Kant k :n->m_kanter)
-            cout<<n->m_navn<<k.m_tilnode->m_navn<<" med vekt = "<<k.m_vekt<<endl;
+    Veg veg = oppg4Graf.DijkstraAlgo('A', 'E');
 
+    std::cout << "Veien fra A til E gå slik:\n";
+    for(Kant k : veg.m_kanter)
+    {
+        std::cout << k.m_tilnode->m_navn << "";
     }
-    // får ikke Dijkstras algoritme til å funke
-    //cout<<endl<<"dijkstra test";
-    //Veg FerdigVeg=DijkstraAlgo(oppg4Graf,'A','D');
-
-    //for(Node* n : FerdigVeg.Noder)
-      //  cout<<n->m_navn;
+    std::cout << "\n Vekt = " << veg.m_vekt << std::endl;
 }
 
-//Oppgave_4::Veg Oppgave_4::DijkstraAlgo(Graf graf, char startNavn, char sluttNavn)
-//{
-//    Node* start;
-//    Node* slutt;
-//    for(Node* n:graf.noder){
-//        if(n->m_navn==startNavn)
-//          start=n;
-//        if(n->m_navn==sluttNavn)
-//            slutt=n;
+Oppgave_4::Veg Oppgave_4::Graf::DijkstraAlgo(char startNavn, char sluttNavn)
+{
+    std::priority_queue<Veg, std::vector<Veg>, std::greater<Veg>> pq;
 
-//    }
+    Node* startNode = finn_node(startNavn);
+    Node* sluttNode = finn_node(sluttNavn);
+    Veg startVeg;
+    Kant startKant (0,startNode);
+    startVeg.settInn_Kant(startKant);
 
-//    list<Veg> Veger;
-//    list<Veg> FerdigeVeger;
-//    for (Kant k : start->m_kanter)
-//        Veger.emplace_back(new Veg(start,k.m_vekt));
+    pq.push(startVeg);
 
-//    for(Veg v: Veger){
-//            if(v.rekkerSlutt){
-//                for(Node* n: v.Noder){
-//                    if(n->m_kanter.size()<1&&n->m_navn!=slutt->m_navn){
-//                        v.rekkerSlutt=false;
-//                    }
-//                    else if(n->m_navn==slutt->m_navn){
-//                        FerdigeVeger.emplace_back(v);
-//                    }
-//                    else
-//                        for(Kant k : n->m_kanter){
-//                           Veger.emplace_back(new Veg(start,v.m_prioritetsVekt+k.m_vekt));
-//                        }
-//                }
-//            }
-//        }
+    while(!pq.empty() && !sluttNode->m_besokt)
+    {
+        Veg top = pq.top();
+        pq.pop();
 
-//        for(Veg v : FerdigeVeger){
-//            for(Veg f :FerdigeVeger){
-//                if(f.Noder!=v.Noder&&f.m_prioritetsVekt<v.m_prioritetsVekt){
-//                    Veg TempVeg=f;
-//                    f=v;
-//                    v=TempVeg;
-//                }
-//            }
-//        }
+        if(top.m_kanter.back().m_tilnode == sluttNode)
+            return top;
+        for(auto kant : top.m_kanter.back().m_tilnode ->m_kanter)
+        {
+            if(kant.m_tilnode->m_besokt != true)
+            {
+                Veg nyVeg = top;
+                nyVeg.settInn_Kant(kant);
+                pq.push(nyVeg);
+            }
+        }
+        top.m_kanter.back().m_tilnode->m_besokt = true;
 
-//        return FerdigeVeger.front();
-
-//}
+    }
+    return pq.top();
+}
 
 void Oppgave_4::Node::settinn_kant(const Kant &kant)
 {

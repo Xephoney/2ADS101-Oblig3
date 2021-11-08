@@ -12,6 +12,7 @@ public:
     void Aktiver();
 
     struct Kant;
+    struct Veg;
     struct Node{
         char m_navn;
         bool m_besokt;
@@ -34,22 +35,25 @@ public:
         void settinn_node(char navn);
         void settinn_kant(char fra_navn, char til_navn, float vekt);
         float mst();
+        Veg DijkstraAlgo(char startNavn, char sluttNavn);
     };
 
     // Dijkstra's //
 
     struct Veg{
 
-        Node* m_start;
-        float m_prioritetsVekt;
-        bool rekkerSlutt;
-        Veg(Node* start, float prioritetsVekt): m_start(start), m_prioritetsVekt(prioritetsVekt),
-            rekkerSlutt(true){ }
-        std::list<Node*> Noder;
+        std::vector<Kant> m_kanter;
+        float m_vekt{0.f};
+        void settInn_Kant(Kant &_kant)
+        {
+            m_kanter.push_back(_kant);
+            m_vekt+=_kant.m_vekt;
+        }
 
+        Veg(){ }
+
+        bool operator>(const Veg &v) const { return m_vekt > v.m_vekt; }
     };
-
-    Veg DijkstraAlgo(Graf graf, char startNavn, char sluttNavn);
 };
 
 #endif // OPPGAVE_4_H
